@@ -1,0 +1,120 @@
+# -*-coding:UTF-8 -*-
+import logging
+import json
+import requests
+from flask import Flask
+from flask_ask import Ask, statement
+
+app = Flask(__name__)
+ask = Ask(app, '/')
+logging.getLogger("flask_ask").setLevel(logging.DEBUG)
+
+
+@app.route('/')
+def index():
+    return 'Hi'
+
+
+@ask.launch
+def start_skill():
+    welcom_message = "incomming!!!"
+    return statement(welcom_message)
+
+
+@ask.intent('turn_on')
+def test():
+    dic1 = {'on': True, 'sat': 254, 'bri': 254, 'hue': 10000}
+
+    json_val = json.dumps(dic1)
+
+    url = 'http://192.168.100.5/api/bypIZTE7QCAAuFqMO1HQ4MZHhnw5wObHVKiYIo9X/groups/1/action'
+
+    response = requests.put(url, data=json_val)
+    if response.status_code != 200:
+        print(response.text)
+        raise Exception('Response error received.')
+        error = 'nope'
+        return statement(error)
+    else:
+        ok = 'okay, my master'
+        return statement(ok)
+
+
+@ask.intent('study_mode')
+def test1():
+    dic1 = {'on': True, 'xy': [0.1, 0.1]}
+
+    json_val = json.dumps(dic1)
+
+    url = 'http://192.168.100.5/api/bypIZTE7QCAAuFqMO1HQ4MZHhnw5wObHVKiYIo9X/groups/1/action'
+
+    response = requests.put(url, data=json_val)
+    if response.status_code != 200:
+        print(response.text)
+        raise Exception('Response error received.')
+        error = 'nope'
+        return statement(error)
+    else:
+        ok = 'okay, my master'
+        return statement(ok)
+
+
+@ask.intent('sunrise_sunset')
+def test2():
+    dic1 = {'on': True, 'xy': [0.5, 0.4]}
+
+    json_val = json.dumps(dic1)
+
+    url = 'http://192.168.100.5/api/bypIZTE7QCAAuFqMO1HQ4MZHhnw5wObHVKiYIo9X/groups/1/action'
+
+    response = requests.put(url, data=json_val)
+    if response.status_code != 200:
+        print(response.text)
+        raise Exception('Response error received.')
+        error = 'nope'
+        return statement(error)
+    else:
+        ok = 'okay, my master'
+        return statement(ok)
+
+
+@ask.intent('color_loop')
+def test3():
+    dic1 = {'on': True, 'hue': 2000, 'effect': 'colorloop'}
+
+    json_val = json.dumps(dic1)
+
+    url = 'http://192.168.100.5/api/bypIZTE7QCAAuFqMO1HQ4MZHhnw5wObHVKiYIo9X/groups/1/action'
+
+    response = requests.put(url, data=json_val)
+    if response.status_code != 200:
+        print(response.text)
+        raise Exception('Response error received.')
+        error = 'nope'
+        return statement(error)
+    else:
+        ok = 'okay, my master'
+        return statement(ok)
+
+
+@ask.intent('turn_off')
+def test4():
+    dic1 = {'on': False, 'effect': 'none'}
+
+    json_val = json.dumps(dic1)
+
+    url = 'http://192.168.100.5/api/bypIZTE7QCAAuFqMO1HQ4MZHhnw5wObHVKiYIo9X/groups/1/action'
+
+    response = requests.put(url, data=json_val)
+    if response.status_code != 200:
+        print(response.text)
+        raise Exception('Response error received.')
+        error = 'nope'
+        return statement(error)
+    else:
+        ok = 'Good bye my master'
+        return statement(ok)
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
